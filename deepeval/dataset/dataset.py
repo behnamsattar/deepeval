@@ -799,6 +799,7 @@ class EvaluationDataset:
         self,
         file_type: Literal["json", "csv", "jsonl"],
         directory: str,
+        file_name: Optional[str] = None,
         include_test_cases: bool = False,
         file_name: Optional[str] = None,
     ) -> str:
@@ -826,11 +827,11 @@ class EvaluationDataset:
                 f"No goldens found. Please generate goldens before attempting to save data as {file_type}"
             )
 
-        new_filename = file_name
-        if new_filename is None:
-            new_filename = (
-                datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + f".{file_type}"
-            )
+        new_filename = (
+            datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            if file_name is None
+            else file_name
+        ) + f".{file_type}"
 
         if not os.path.exists(directory):
             os.makedirs(directory)
